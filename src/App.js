@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 
 
-const code = `
+let code = `
 public class Solution {
 
     public static int reverseNumber(int n) {
@@ -42,31 +42,46 @@ public class Solution {
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      code: "",
-      counter: 3,
-    };
-    this.addCharacter = this.addCharacter.bind(this);
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            code: "",
+            counter: 0,
+        };
+        this.addCharacter = this.addCharacter.bind(this);
+    }
 
-  addCharacter() {
-    console.log("add character");
-    this.setState(prevState => {
-      return {
-        code: code.substring(0, prevState.counter),
-        counter: prevState.counter + 3,
-      }});
-  }
+    componentDidMount() {
+        window.addEventListener('keypress', this.addCharacter);
+    }
 
-  render() {
-    return (
-        <div className="App" onKeyPress={this.addCharacter} tabIndex="0">
+    addCharacter() {
+        this.setState(prevState => {
+            const startIndex = prevState.counter;
+            const endIndex = (prevState.counter + 3) % code.length;
+            
+            if(endIndex < startIndex) {
+                return {
+                  counter: (prevState.counter + 3) % code.length,
+                };
+            }
+
+            return {
+                code: prevState.code + code.substring(startIndex, endIndex),
+                counter: (prevState.counter + 3) % code.length,
+            }
+        });
+    }
+
+    render() {
+        return (
+            <div className="App">
+          <pre>
           {this.state.code}
-        </div>
-    );
-  }
+          </pre>
+            </div>
+        );
+    }
 }
 
 export default App;
