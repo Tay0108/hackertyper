@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 
-
-let code = `
+const code = `
 public class Solution {
 
     public static int reverseNumber(int n) {
@@ -42,27 +41,43 @@ public class Solution {
 
 class App extends Component {
 
+
     constructor(props) {
         super(props);
         this.state = {
             code: "",
             counter: 0,
+            isCaret: false,
         };
+
+        this.caret = "|";
+
         this.addCharacter = this.addCharacter.bind(this);
+        this.toggleCaret = this.toggleCaret.bind(this);
+    }
+
+    scrollToBottom() {
+        this.end.scrollIntoView();
     }
 
     componentDidMount() {
         window.addEventListener('keypress', this.addCharacter);
+        setInterval(() => this.toggleCaret(), 500);
+        this.scrollToBottom();
+    }
+
+    componentDidUpdate() {
+        this.scrollToBottom();
     }
 
     addCharacter() {
         this.setState(prevState => {
             const startIndex = prevState.counter;
             const endIndex = (prevState.counter + 3) % code.length;
-            
-            if(endIndex < startIndex) {
+
+            if (endIndex < startIndex) {
                 return {
-                  counter: (prevState.counter + 3) % code.length,
+                    counter: (prevState.counter + 3) % code.length,
                 };
             }
 
@@ -73,12 +88,24 @@ class App extends Component {
         });
     }
 
+    toggleCaret() {
+        this.setState(prevState => {
+            return {
+                isCaret: !prevState.isCaret,
+            };
+        })
+    }
+
     render() {
         return (
-            <div className="App">
-          <pre>
-          {this.state.code}
-          </pre>
+            <div className="App" >
+              <pre className="code">
+                  // Start hacking:
+
+              {this.state.code}
+                  {this.state.isCaret ? this.caret : ""}
+              </pre>
+                <div ref={end => { this.end = end; }}> </div>
             </div>
         );
     }
