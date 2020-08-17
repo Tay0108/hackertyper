@@ -100,6 +100,8 @@ class App extends Component {
         return (
             <div className="App" >
               <pre className="code">
+                  { // eslint-disable-next-line
+                  }
                   // Start hacking:
 
               {this.state.code}
