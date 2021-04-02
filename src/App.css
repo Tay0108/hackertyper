@@ -1,13 +1,12 @@
 body {
-    color: #00ff2d;
-    background-color: black;
+  color: #00ff2d;
+  background-color: black;
 }
 
-
 .App {
-    white-space: pre-line;
+  white-space: pre-line;
 }
 
 ::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
